@@ -36,7 +36,7 @@ Connect with the WiFi
 '''
 print("Try to connect with the WiFi..")
 while (1):
-    if "WIFI CONNECTED" in esp01.connectWiFi("Irancell-Z6000","@9123214684@"):
+    if "WIFI CONNECTED" in esp01.connectWiFi("Shahrah","asb@456!!##&"):
         print("ESP8266 connect with the WiFi..")
         break;
     else:
@@ -46,6 +46,9 @@ while (1):
 
 print("\r\n\r\n")
 print("Now it's time to start HTTP Get/Post Operation.......\r\n")
+
+
+esp01.getIp()
 
 while(1):    
     led.toggle()
@@ -72,10 +75,15 @@ while(1):
     '''
     Going to do HTTP Post Operation with www.httpbin.org/post
     '''
-    post_json="{\"adc_num\":\"12\"}"
-    httpCode, httpRes = esp01.doHttpPost("api-server-iot-demo-lgyn.hamdam.0-1.neorcloud.com","/api/metrics","RPi-Pico", "application/json",post_json,port=80)
+    post_json="""{
+      "sensor_id": "1",
+      "freq": "1",
+      "adc_num": "2",
+      "duty_cycle": "2"
+        }       
+        """
+    httpCode, httpRes = esp01.doHttpPost("iot-infra.r1-asiatech.neorcloud.com","/api/metrics", "application/json",post_json,token="9963deef358bd53ba1e59f942b6103f7d2cedaac",port=80)
     print("------------- NEOR Post Operation Result -----------------------")
     print("HTTP Code:",httpCode)
     print("HTTP Response:",httpRes)
     print("--------------------------------------------------------------------------------\r\n\r\n")
-

@@ -338,6 +338,10 @@ class ESP8266:
             return apLists
         else:
             return None
+    
+    def getIp(self):
+         retData = str(self._sendToESP8266("AT+CIFSR\r\n", delay=10))
+         return retData
         
     def connectWiFi(self,ssid,pwd):
         """
@@ -459,7 +463,7 @@ class ESP8266:
             return 0, None
             
         
-    def doHttpPost(self,host,path,content_type,content,user_agent="RPi-Pico",port=80):
+    def doHttpPost(self,host,path,content_type,content,token="a",user_agent="RPi-Pico",port=80):
         """
         This fucntion use to complete a HTTP Post operation
         
@@ -478,7 +482,7 @@ class ESP8266:
         """
         if(self._createTCPConnection(host, port) == True):
             self._createHTTPParseObj()
-            postHeader="POST "+path+" HTTP/1.1\r\n"+"Host: "+host+"\r\n"+"User-Agent: "+user_agent+"\r\n"+"Content-Type: "+content_type+"\r\n"+"Content-Length: "+str(len(content))+"\r\n"+"\r\n"+content+"\r\n";
+            postHeader="POST "+path+" HTTP/1.1\r\n"+"Host: "+host+"\r\n"+"User-Agent: "+user_agent+"\r\n"+"Content-Type: "+content_type+"\r\n"+"Authorization: Token "+token+"\r\n"+"Content-Length: "+str(len(content))+"\r\n"+"\r\n"+content+"\r\n";
             #print(postHeader,len(postHeader))
             txData="AT+CIPSEND="+str(len(postHeader))+"\r\n"
             retData = self._sendToESP8266(txData)
@@ -505,4 +509,3 @@ class ESP8266:
         print('Destructor called, ESP8266 deleted.')
         pass
         
-
